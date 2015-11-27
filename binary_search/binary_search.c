@@ -30,11 +30,6 @@ int linear_search(unsigned char x[], unsigned size, unsigned char search_value)
 
 int binary_search(unsigned char x[], unsigned size, unsigned char search_value)
 {
-    // Invariants is conjunction of:
-    //   (1) a <= b
-    //   (2) If there is a smaller index i such that x[i] == search_value,
-    //       it will be in the half-open interval [a, b).
-
     unsigned a = 0;
     unsigned b = size;
 
@@ -62,7 +57,7 @@ int binary_search(unsigned char x[], unsigned size, unsigned char search_value)
     return result;
 }
 
-void test(unsigned size)
+void test_bsearch(unsigned size)
 {
     unsigned x[size];
 
@@ -82,11 +77,53 @@ void test(unsigned size)
     }
 }
 
+void sort(unsigned char x[], unsigned size)
+{
+    for (unsigned i = 0; i < size; ++i)
+    {
+        for (unsigned j = i + 1; j < size; ++j)
+        {
+            if (x[j] < x[i])
+            {
+                unsigned char t = x[i];
+                x[i] = x[j];
+                x[j] = t;
+            }
+        }
+    }
+}
+
+void test_sort(unsigned size)
+{
+    unsigned x[size];
+
+    for (unsigned i = 0; i < size; ++i)
+    {
+        x[i] = nondet_uchar() & 15; // nondeterministic number in range 0 .. 15;
+    }
+
+    sort(x, size);
+
+    assert(is_sorted(x, size));
+}
+
 int main()
 {
-    for (unsigned size = 0; size <= 10; ++size)
+    if (true)
     {
-        test(size);
+        for (unsigned size = 0; size <= 10; ++size)
+        {
+            test_bsearch(size);
+        }
     }
+
+    if (true)
+    {
+        for (unsigned size = 0; size <= 10; ++size)
+        {
+            test_sort(size);
+        }
+    }
+
     return 0;
 }
